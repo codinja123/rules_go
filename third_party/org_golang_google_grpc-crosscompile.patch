@@ -1,0 +1,57 @@
+diff --git a/internal/channelz/BUILD.bazel b/internal/channelz/BUILD.bazel
+index d77ff52..4afa6eb 100644
+--- a/internal/channelz/BUILD.bazel
++++ b/internal/channelz/BUILD.bazel
+@@ -13,12 +13,15 @@ go_library(
+     ],
+     importpath = "google.golang.org/grpc/internal/channelz",
+     visibility = ["//:__subpackages__"],
+-    deps = [
+-        "//connectivity",
+-        "//credentials",
+-        "//grpclog",
+-        "//internal/grpclog",
+-    ],
++    deps = select({
++        "@io_bazel_rules_go//go/platform:linux": [
++             "//connectivity",
++             "//credentials",
++             "//grpclog",
++             "//internal/grpclog",
++             "@org_golang_x_sys//unix:go_default_library",
++         ],
++    }),
+ )
+ 
+ alias(
+diff --git a/internal/syscall/BUILD.bazel b/internal/syscall/BUILD.bazel
+index d422939..d6993e5 100644
+--- a/internal/syscall/BUILD.bazel
++++ b/internal/syscall/BUILD.bazel
+@@ -23,6 +23,7 @@ go_library(
+         ],
+         "@io_bazel_rules_go//go/platform:freebsd": [
+             "//grpclog",
++            "@org_golang_x_sys//unix:go_default_library",
+         ],
+         "@io_bazel_rules_go//go/platform:illumos": [
+             "//grpclog",
+@@ -35,15 +36,18 @@ go_library(
+         ],
+         "@io_bazel_rules_go//go/platform:linux": [
+             "//grpclog",
++            "@org_golang_x_sys//unix:go_default_library",
+         ],
+         "@io_bazel_rules_go//go/platform:nacl": [
+             "//grpclog",
+         ],
+         "@io_bazel_rules_go//go/platform:netbsd": [
+             "//grpclog",
++            "@org_golang_x_sys//unix:go_default_library",
+         ],
+         "@io_bazel_rules_go//go/platform:openbsd": [
+             "//grpclog",
++            "@org_golang_x_sys//unix:go_default_library",
+         ],
+         "@io_bazel_rules_go//go/platform:plan9": [
+             "//grpclog",

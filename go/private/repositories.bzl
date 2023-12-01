@@ -88,6 +88,18 @@ def go_rules_dependencies(is_rules_go = False):
         patch_args = ["-p1"],
     )
 
+    _maybe(
+        git_repository,
+        name = "org_golang_google_grpc",
+        remote = "https://github.com/grpc/grpc-go",
+        patches = [
+            "@io_bazel_rules_go//third_party:org_golang_google_grpc-crosscompile.patch",
+        ],
+        patch_args = ["-p1"],
+        shallow_since = "1551206709 -0800",
+        # gazelle args: -go_prefix google.golang.org/grpc -proto disable
+    )
+
     # Needed by golang.org/x/tools/go/packages
     _maybe(
         http_archive,
