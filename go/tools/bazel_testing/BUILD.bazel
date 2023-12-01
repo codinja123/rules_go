@@ -1,0 +1,25 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "bazel_testing",
+    srcs = ["bazel_testing.go"],
+    importpath = "github.com/bazelbuild/rules_go/go/tools/bazel_testing",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//go/tools/bazel",
+        "//go/tools/internal/txtar",
+    ],
+)
+
+filegroup(
+    name = "all_files",
+    testonly = True,
+    srcs = glob(["**"]),
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":bazel_testing",
+    visibility = ["//visibility:public"],
+)
