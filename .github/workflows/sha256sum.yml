@@ -13,14 +13,28 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Clean source
+        run: |
+          rm -rf $GITHUB_WORKSPACE/.github
+          rm -rf $GITHUB_WORKSPACE/.git
+
+      - name: Set up temporary directory
+        run: |
+          mkdir -p $GITHUB_WORKSPACE/tmp
+          rsync -a --exclude=tmp/ $GITHUB_WORKSPACE/ $GITHUB_WORKSPACE/tmp/
+          cd $GITHUB_WORKSPACE/tmp
+
       - name: Generate SHA-256 checksum
         run: |
-          tar -czvf rules_go-v1.0.0.tar.gz rules_go/
-          sha256sum rules_go-v1.0.0.tar.gz > rules_go-v1.0.0.tar.gz.sha256
+          tar --exclude=rules_go-v1.0.0.tar.gz --exclude=.github --exclude=.git --exclude=.bazelrc --exclude=.bazelci --exclude=.gitignore --warning=no-file-changed -czvf rules_go-v1.0.0.tar.gz .
+          cd $GITHUB_WORKSPACE
 
-      - name: Publish checksum
+          sha256sum tmp/rules_go-v1.0.0.tar.gz > rules_go-v1.0.0.tar.gz.sha256
+
+      - name: Publish artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: checksum
-          path: rules_go-v1.0.0.tar.gz.sha256
-
+          name: release-artifacts
+          path: |
+            tmp/rules_go-v1.0.0.tar.gz
+            rules_go-v1.0.0.tar.gz.sha256
