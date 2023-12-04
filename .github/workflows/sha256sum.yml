@@ -1,0 +1,26 @@
+name: Generate SHA-256 Checksum
+
+on:
+  release:
+    types:
+      - created
+
+jobs:
+  generate_checksum:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Generate SHA-256 checksum
+        run: |
+          tar -czvf rules_go-v1.0.0.tar.gz rules_go/
+          sha256sum rules_go-v1.0.0.tar.gz > rules_go-v1.0.0.tar.gz.sha256
+
+      - name: Publish checksum
+        uses: actions/upload-artifact@v2
+        with:
+          name: checksum
+          path: rules_go-v1.0.0.tar.gz.sha256
+
