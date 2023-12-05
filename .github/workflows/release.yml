@@ -18,11 +18,6 @@ jobs:
         zip -r ${{ github.event.release.tag_name }}.zip .
         sha256sum ${{ github.event.release.tag_name }}.zip > ${{ github.event.release.tag_name }}.zip.sha256
 
-    - name: Create Tar.gz Archive
-      run: |
-        tar --exclude=.github --exclude=.git --exclude=.bazelrc --exclude=.bazelci --exclude=.gitignore --exclude=${{ github.event.release.tag_name }}.zip --exclude=${{ github.event.release.tag_name }}.zip.sha256 --warning=no-file-changed -czvf ${{ github.event.release.tag_name }}.tar.gz .
-        sha256sum ${{ github.event.release.tag_name }}.tar.gz > ${{ github.event.release.tag_name }}.tar.gz.sha256
-
     - name: Upload Archives
       uses: actions/upload-artifact@v2
       with:
@@ -30,6 +25,4 @@ jobs:
         path: |
           ${{ github.event.release.tag_name }}.zip
           ${{ github.event.release.tag_name }}.zip.sha256
-          ${{ github.event.release.tag_name }}.tar.gz
-          ${{ github.event.release.tag_name }}.tar.gz.sha256
 

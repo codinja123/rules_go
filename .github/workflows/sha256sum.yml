@@ -26,7 +26,7 @@ jobs:
 
       - name: Generate SHA-256 checksum
         run: |
-          tar --exclude=rules_go-v1.0.0.tar.gz --exclude=.github --exclude=.git --exclude=.bazelrc --exclude=.bazelci --exclude=.gitignore --warning=no-file-changed -czvf rules_go-v1.0.0.tar.gz .
+          tar --exclude=rules_go-v1.0.0.tar.gz --exclude=dist --warning=no-file-changed -czvf rules_go-v1.0.0.tar.gz .
           cd $GITHUB_WORKSPACE
 
           sha256sum tmp/rules_go-v1.0.0.tar.gz > rules_go-v1.0.0.tar.gz.sha256
